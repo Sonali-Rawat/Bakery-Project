@@ -13,6 +13,10 @@
       {
         "src": "/(.*)",
         "dest": "frontend/build/$1"
+      },
+      {
+        "src": "/api/(.*)", 
+        "dest": "backend/server.js" 
       }
     ]
   }
