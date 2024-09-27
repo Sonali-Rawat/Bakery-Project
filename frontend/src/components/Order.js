@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Order = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Use navigate for navigation
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
 
@@ -15,7 +16,7 @@ const Order = () => {
         // If item exists, increase its quantity
         const updatedCart = prevCart.map(cartItem =>
           cartItem._id === item._id
-            ? { ...cartItem, quantity: cartItem.quantity  }
+            ? { ...cartItem, quantity: cartItem.quantity }
             : cartItem
         );
         recalculateTotal(updatedCart);
@@ -107,6 +108,11 @@ const Order = () => {
     ));
   };
 
+  // Function to handle checkout and navigate to payment page
+  const handleCheckout = () => {
+    navigate('/payment', { state: { total, cart } }); // Pass cart and total to Payment page
+  };
+
   return (
     <div className="flex p-8">
       <div className="w-1/2 pr-4">
@@ -131,7 +137,12 @@ const Order = () => {
           <h3>Total: ${total.toFixed(2)}</h3>
           <h4>GST (18%): ${calculateGST()}</h4>
           <h3 className="font-bold">Final Total: ${finalTotalWithGST}</h3>
-          <button className="bg-green-500 mt-2 px-4 py-2 text-white rounded">Checkout</button>
+          <button
+            className="bg-green-500 mt-2 px-4 py-2 text-white rounded"
+            onClick={handleCheckout} // Checkout and navigate to payment
+          >
+            Checkout
+          </button>
         </div>
       </div>
     </div>
